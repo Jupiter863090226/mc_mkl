@@ -7,12 +7,16 @@ CC:=mpic++
 LINK_LIB:=-ltensorflow_cc -ltensorflow_framework -lscalapack -lmkl_rt
 CFLAGS:=-std=c++11 -g -Wall -fPIC -fopenmp
 
-train: train.o scalapack.o
+main: main.o scalapack.o mc.o nn.o
 	$(CC) $^ -o $@  $(LINK_LIB)
-train.o: train-mkl.cc
-	$(CC) -c -o $@ $< $(CFLAGS)
+main.o: main.cc
+	$(CC) -c -o $@ $^ $(CFLAGS)
 scalapack.o: scalapack.cc
-	$(CC) -c -o $@ $< $(CFLAGS)
-all: train
+	$(CC) -c -o $@ $^ $(CFLAGS)
+mc.o: mc.cc
+	$(CC) -c -o $@ $^ $(CFLAGS)
+nn.o: nn.cc
+	$(CC) -c -o $@ $^ $(CFLAGS)
+all: main
 clean:
-	rm train *.o
+	rm main *.o
